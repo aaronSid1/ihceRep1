@@ -1,0 +1,51 @@
+from openerp.osv import fields, osv
+from openerp import models, fields, api, exceptions, tools, SUPERUSER_ID 
+from openerp.tools.translate import _
+from openerp import http
+from datetime import datetime
+import pdb
+
+
+class Register(http.Controller):
+
+    @http.route('/signup/', auth='public', website=True, methods=['GET'])
+    def index(self, **kw):
+        Atentionareas = http.request.env['atention.area']
+        atentionareas = Atentionareas.search([('name','!=','')])
+        #pdb.set_trace()
+        
+        i = []
+        for x in atentionareas:
+            #pdb.set_trace()
+            i.append(x.name)
+        #for row in self.pool.get('atention.area').browse(cr, uid, atentionareas, context):
+
+        
+        # print str(colonies)
+        return http.request.render('company_ihce.form', {            
+            'types': ['Emprendedor','Persona Fisica','Persona Moral'],
+            'areas': i,
+            #'areas': ['emprendedor','fisica','moral'],
+        })
+
+    @http.route('/signup/', auth='public', website=True, methods=['POST'])
+    def reg(self, **kw):
+        print "INSIDE" + str(http.request.params)
+        Companies = http.request.env['companies.ihce']
+        Login = http.request.env['login.ihce']
+        com2 = Login.create(http.request.params)
+        com = Companies.create(http.request.params)
+        com.write({'company': True, 'diagnostico': True, 'state': 'draft', 'date': datetime.now()})
+        Atentionareas = http.request.env['atention.area']
+        atentionareas = Atentionareas.search([('name','!=','')])
+        i = []
+        for x in atentionareas:
+            #pdb.set_trace()
+            i.append(x.name)
+
+
+        return http.request.render('company_ihce.form', {
+            'types': ['Emprendedor','Persona Fisica','Persona Moral'],
+            'message': 'Gracias por registrarte.',
+            'areas': i
+        })

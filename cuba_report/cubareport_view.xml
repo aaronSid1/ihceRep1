@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+	  <template id="report_saleorder_document">
+    <t t-call="report.external_layout">
+        <t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})" />
+        <div class="page">
+            <div class="oe_structure"/>
+            <div class="row">
+                <div class="col-xs-12">
+                    <strong>HOLA MARLON:</strong>
+                    <p>	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod exercitationem odio reprehenderit cupiditate obcaecati optio modi doloribus beatae, omnis labore illum fugiat minima deleniti aliquid ab dolorum culpa provident dignissimos.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <p>	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod exercitationem odio reprehenderit cupiditate obcaecati optio modi doloribus beatae, omnis labore illum fugiat minima deleniti aliquid ab dolorum culpa provident dignissimos.</p>
+                </div>
+                 
+                 <div class="col-xs-6">
+                    <p>	Lorem ipsum dolor sit amet, consectetur adip.</p>
+                </div>
+            </div>
+
+            <div class="oe_structure"/>
+        </div>
+    </t>
+</template>
+
+
+ <template id="report_saleorder_cuba" inherit_id="sale.report_saleorder">        
+			<t t-call="report.html_container" position="replace">
+				<t t-call="report.html_container">
+					<t t-foreach="docs" t-as="doc">
+						<t t-call="cuba_report.report_saleorder_document" t-lang="doc.partner_id.lang"/>
+					</t>
+				</t>
+			</t>
+</template>
+
+
+	</data>
+</openerp>
